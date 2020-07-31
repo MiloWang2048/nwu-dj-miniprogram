@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.milolab.dj.dao.ExchangeRecordDAO">
+
+    <resultMap id="ExchangeRecordResultMap" type="cn.milolab.dj.bean.entity.ExchangeRecord">
+        <id property="id" column="id"/>
+        <result property="deleted" column="is_deleted"/>
+        <result property="cstCreate" column="cst_create"/>
+        <result property="cstModified" column="cst_modified"/>
+        <result property="jobId" column="job_id"/>
+        <result property="originalUserId" column="original_user_id"/>
+        <result property="targetUserId" column="target_user_id"/>
+        <result property="accepted" column="is_accepted"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        insert into exchange_record
+        (cst_create,
+         cst_modified,
+         job_id,
+         original_user_id,
+         target_user_id,
+         is_accepted)
+        values (current_timestamp(),
+                current_timestamp(),
+                #{jobId},
+                #{originalUserId},
+                #{targetUserId},
+                #{accepted});
+    </insert>
+
+    <update id="updateWithEntity">
+        update exchange_record
+        set job_id           = #{jobId},
+            original_user_id = #{originalUserId},
+            target_user_id   = #{targetUserId},
+            is_accepted      = #{accepted},
+            cst_modified     = current_timestamp()
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <update id="deleteById">
+        update exchange_record
+        set is_deleted = true
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <select id="getAllExchangeRecords" resultMap="ExchangeRecordResultMap">
+        select *
+        from exchange_record
+        where is_deleted = false;
+    </select>
+
+    <select id="findById" resultMap="ExchangeRecordResultMap">
+        select *
+        from exchange_record t1
+        where t1.id = #{id}
+          and is_deleted = false;
+    </select>
+
+</mapper>

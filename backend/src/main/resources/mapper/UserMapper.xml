@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.milolab.dj.dao.UserDAO">
+
+    <resultMap id="UserResultMap" type="cn.milolab.dj.bean.entity.User">
+        <id property="id" column="id"/>
+        <result property="deleted" column="is_deleted"/>
+        <result property="cstCreate" column="cst_create"/>
+        <result property="cstModified" column="cst_modified"/>
+        <result property="openid" column="openid"/>
+        <result property="unionid" column="unionid"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="avatarUrl" column="avatar_url"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        insert into user (cst_create, cst_modified, openid, unionid, session_key, avatar_url)
+        values (current_timestamp(), current_timestamp(), #{openid}, #{unionid},
+                #{sessionKey}, #{avatarUrl});
+    </insert>
+
+    <update id="updateWithEntity">
+        update user
+        set openid       = #{openid},
+            unionid      = #{unionid},
+            session_key  = #{sessionKey},
+            avatar_url   = #{avatarUrl},
+            cst_modified = current_timestamp()
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <update id="deleteById">
+        update user
+        set is_deleted = true
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <select id="getAllUsers" resultMap="UserResultMap">
+        select *
+        from user
+        where is_deleted = false;
+    </select>
+
+    <select id="findById" resultMap="UserResultMap">
+        select *
+        from user t1
+        where t1.id = #{id}
+          and is_deleted = false;
+    </select>
+
+</mapper>

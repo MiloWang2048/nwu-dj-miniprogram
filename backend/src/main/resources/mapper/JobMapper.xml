@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.milolab.dj.dao.JobDAO">
+
+    <resultMap id="JobResultMap" type="cn.milolab.dj.bean.entity.Job">
+        <id property="id" column="id"/>
+        <result property="deleted" column="is_deleted"/>
+        <result property="cstCreate" column="cst_create"/>
+        <result property="cstModified" column="cst_modified"/>
+        <result property="name" column="name"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="maxJob" column="max_job"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        insert into job
+        (cst_create,
+         cst_modified,
+         name,
+         job_position,
+         start_time,
+         end_time,
+         max_job)
+        values (current_timestamp(),
+                current_timestamp(),
+                #{name},
+                #{jobPosition},
+                #{startTime},
+                #{startTime},
+                #{maxJob});
+    </insert>
+
+    <update id="updateWithEntity">
+        update job
+        set name         = #{name},
+            job_position = #{jobPosition},
+            start_time   = #{startTime},
+            end_time     = #{endTime},
+            max_job      = #{maxJob},
+            cst_modified = current_timestamp()
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <update id="deleteById">
+        update job
+        set is_deleted = true
+        where id = #{id}
+          and is_deleted = false;
+    </update>
+
+    <select id="getAllJobs" resultMap="JobResultMap">
+        select *
+        from job
+        where is_deleted = false;
+    </select>
+
+    <select id="findById" resultMap="JobResultMap">
+        select *
+        from job t1
+        where t1.id = #{id}
+          and is_deleted = false;
+    </select>
+
+</mapper>
