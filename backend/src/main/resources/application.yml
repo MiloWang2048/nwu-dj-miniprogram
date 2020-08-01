@@ -6,7 +6,19 @@ spring:
     password: "milowang2020"
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
-
 mybatis:
   mapper-locations: "classpath:mapper/*.xml"
   type-aliases-package: "cn.milolab.dj.bean.entity"
+
+shiro:
+  enabled: true
+
+miniprogram:
+  appid: ""
+  appsecret: ""
+
+logging:
+  level:
+    cn:
+      milolab:
+        dj: debug

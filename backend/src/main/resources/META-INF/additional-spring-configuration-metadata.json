@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "miniprogram.appid",
+      "type": "java.lang.String",
+      "description": "小程序appid."
+    },
+    {
+      "name": "miniprogram.appsecret",
+      "type": "java.lang.String",
+      "description": "小程序appsecret."
+    }
+  ]
+}
