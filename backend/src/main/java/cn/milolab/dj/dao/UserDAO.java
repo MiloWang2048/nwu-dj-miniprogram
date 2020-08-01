@@ -48,4 +48,12 @@ public interface UserDAO {
      * @return 受影响的行数
      */
     int updateWithEntity(User user);
+
+    /**
+     * 按openid查找用户信息
+     *
+     * @param openid 用户openid
+     * @return 用户信息实体
+     */
+    User findByOpenid(String openid);
 }

@@ -54,4 +54,11 @@
           and is_deleted = false;
     </select>
 
+    <select id="findByUserId" resultMap="AdminInfoResultMap">
+        select *
+        from admin_info
+        where user_id = #{userId}
+          and is_deleted = false;
+    </select>
+
 </mapper>

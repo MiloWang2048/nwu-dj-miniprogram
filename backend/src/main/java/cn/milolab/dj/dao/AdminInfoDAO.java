@@ -26,6 +26,14 @@ public interface AdminInfoDAO {
     AdminInfo findById(int id);
 
     /**
+     * 按user id查找管理员信息
+     *
+     * @param userId 要查找管理员的userId
+     * @return 查找到的信息
+     */
+    AdminInfo findByUserId(int userId);
+
+    /**
      * 添加一个管理员
      *
      * @param adminInfo 要添加的管理员信息
@@ -43,7 +51,6 @@ public interface AdminInfoDAO {
 
     /**
      * 修改指定id的管理员
-     *
      * @param adminInfo 修改过的新记录
      * @return 受影响的行数
      */

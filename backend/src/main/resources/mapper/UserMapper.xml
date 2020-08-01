@@ -52,4 +52,11 @@
           and is_deleted = false;
     </select>
 
+    <select id="findByOpenid" resultType="cn.milolab.dj.bean.entity.User">
+        select *
+        from user
+        where openid = #{openid}
+          and is_deleted = false;
+    </select>
+
 </mapper>
