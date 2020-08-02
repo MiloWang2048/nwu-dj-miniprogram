@@ -4,7 +4,7 @@ import cn.milolab.dj.bean.entity.AdminInfo;
 import cn.milolab.dj.bean.entity.User;
 import cn.milolab.dj.dao.AdminInfoDAO;
 import cn.milolab.dj.dao.UserDAO;
-import cn.milolab.dj.error.exception.BadRequestExceptionBase;
+import cn.milolab.dj.error.exception.BadRequestException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -68,7 +68,7 @@ public class Authorizer extends AuthorizingRealm {
         String openid = (String) token.getPrincipal();
         User user = userDAO.findByOpenid(openid);
         if (user == null) {
-            throw new BadRequestExceptionBase("用户不存在");
+            throw new BadRequestException("用户不存在");
         }
         return new SimpleAuthenticationInfo(openid, "", this.getName());
     }

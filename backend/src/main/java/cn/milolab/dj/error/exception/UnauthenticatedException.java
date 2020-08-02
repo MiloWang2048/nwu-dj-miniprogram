@@ -3,18 +3,18 @@ package cn.milolab.dj.error.exception;
 /**
  * @author milowang
  */
-public class BadRequestExceptionBase extends BaseRestException {
-    public BadRequestExceptionBase(String message) {
+public class UnauthenticatedException extends BaseRestException {
+    public UnauthenticatedException(String message) {
         super(message);
     }
 
     @Override
     public Integer getStatus() {
-        return 400;
+        return 401;
     }
 
     @Override
     public String getError() {
-        return "Bad Request";
+        return "Unauthorized";
     }
 }

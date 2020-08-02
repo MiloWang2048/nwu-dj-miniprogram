@@ -3,18 +3,18 @@ package cn.milolab.dj.error.exception;
 /**
  * @author milowang
  */
-public class InternalServerErrorExceptionBase extends BaseRestException {
-    public InternalServerErrorExceptionBase(String message) {
+public class BadRequestException extends BaseRestException {
+    public BadRequestException(String message) {
         super(message);
     }
 
     @Override
     public Integer getStatus() {
-        return 500;
+        return 400;
     }
 
     @Override
     public String getError() {
-        return "Internal Server Error";
+        return "Bad Request";
     }
 }

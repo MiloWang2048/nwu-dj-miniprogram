@@ -2,7 +2,7 @@ package cn.milolab.dj.controller;
 
 import cn.milolab.dj.bean.request.LoginRequest;
 import cn.milolab.dj.bean.response.LoginResponse;
-import cn.milolab.dj.error.exception.BadRequestExceptionBase;
+import cn.milolab.dj.error.exception.BadRequestException;
 import cn.milolab.dj.service.LoginService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,7 @@ public class LoginController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Validated LoginRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new BadRequestExceptionBase(bindingResult.getAllErrors().get(0).getDefaultMessage());
+            throw new BadRequestException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
         return loginService.wxLogin(request);
     }

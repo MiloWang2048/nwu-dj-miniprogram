@@ -8,8 +8,8 @@ import cn.milolab.dj.bean.response.LoginResponse;
 import cn.milolab.dj.conf.business.MiniprogramConfig;
 import cn.milolab.dj.dao.AdminInfoDAO;
 import cn.milolab.dj.dao.UserDAO;
-import cn.milolab.dj.error.exception.InternalServerErrorExceptionBase;
-import cn.milolab.dj.error.exception.UnauthenticatedExceptionBase;
+import cn.milolab.dj.error.exception.InternalServerErrorException;
+import cn.milolab.dj.error.exception.UnauthenticatedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -88,14 +88,14 @@ public class LoginService {
             result = restTemplate.getForObject(WX_LOGIN_URL, WxLoginResult.class, requestParam);
         } catch (RestClientException e) {
             LOGGER.warn(e.getStackTrace());
-            throw new InternalServerErrorExceptionBase("服务端网络错误");
+            throw new InternalServerErrorException("服务端网络错误");
         }
         if (result == null) {
-            throw new InternalServerErrorExceptionBase("登录逻辑异常");
+            throw new InternalServerErrorException("登录逻辑异常");
         }
         if (result.getErrcode() != null && result.getErrcode() != 0) {
             LOGGER.warn(result);
-            throw new UnauthenticatedExceptionBase("登录口令无效");
+            throw new UnauthenticatedException("登录口令无效");
         }
         return result;
     }
@@ -110,10 +110,10 @@ public class LoginService {
         } catch (Exception e) {
             LOGGER.warn(result);
             LOGGER.warn(e);
-            throw new InternalServerErrorExceptionBase("用户创建失败");
+            throw new InternalServerErrorException("用户创建失败");
         }
         if (insertResult != 1) {
-            throw new InternalServerErrorExceptionBase("用户创建失败");
+            throw new InternalServerErrorException("用户创建失败");
         }
     }
 }
