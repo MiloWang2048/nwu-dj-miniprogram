@@ -26,6 +26,12 @@ public class ShiroConfig {
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         chainDefinition.addPathDefinition("/api/public/**", "anon");
+
+        chainDefinition.addPathDefinition("/swagger-ui.html", "anon");
+        chainDefinition.addPathDefinition("/webjars/springfox-swagger-ui/**", "anon");
+        chainDefinition.addPathDefinition("/v2/api-docs", "anon");
+        chainDefinition.addPathDefinition("/swagger-resources/**", "anon");
+
         chainDefinition.addPathDefinition("/**", "restAuthFilter");
         return chainDefinition;
     }
