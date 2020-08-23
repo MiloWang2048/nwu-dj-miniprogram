@@ -66,4 +66,12 @@
           and is_deleted = false;
     </select>
 
+    <select id="getAllActiveJobs" resultMap="JobResultMap">
+        select *
+        from job
+        where start_time >= current_timestamp()
+        and is_deleted = false
+        order by start_time;
+    </select>
+
 </mapper>

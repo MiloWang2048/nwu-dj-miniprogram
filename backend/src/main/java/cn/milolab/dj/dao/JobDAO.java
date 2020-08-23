@@ -48,4 +48,10 @@ public interface JobDAO {
      * @return 受影响的行数
      */
     int updateWithEntity(Job job);
+
+    /**
+     * 获取所有活动班次
+     * @return 查询到的班次列表
+     */
+    List<Job> getAllActiveJobs();
 }

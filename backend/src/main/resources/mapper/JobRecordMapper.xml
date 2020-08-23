@@ -65,5 +65,17 @@
         where t1.id = #{id}
           and is_deleted = false;
     </select>
+    <select id="getMyJobsRecord" resultMap="JobRecordResultMap">
+        SELECT t2.*
+        FROM job AS t1
+                 INNER JOIN
+             job_record AS t2
+             ON
+                 t1.id = t2.job_id
+        WHERE t1.is_deleted = false
+          AND t2.is_deleted = false
+          AND t2.user_id = #{userId}
+        ORDER BY t1.start_time DESC
+    </select>
 
 </mapper>

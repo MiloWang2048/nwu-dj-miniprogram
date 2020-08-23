@@ -48,4 +48,11 @@ public interface JobRecordDAO {
      * @return 受影响的行数
      */
     int updateWithEntity(JobRecord jobRecord);
+
+    /**
+     * 获取指定用户的抢班记录
+     * @param userId 用户id
+     * @return 抢班记录列表
+     */
+    List<JobRecord> getMyJobsRecord(int userId);
 }
