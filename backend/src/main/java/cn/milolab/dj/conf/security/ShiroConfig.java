@@ -3,6 +3,7 @@ package cn.milolab.dj.conf.security;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ShiroConfig {
+    @Value("${enableAccessControl}")
+    private Boolean enableAccessControl;
 
     @Autowired
     @Bean
@@ -32,7 +35,11 @@ public class ShiroConfig {
         chainDefinition.addPathDefinition("/v2/api-docs", "anon");
         chainDefinition.addPathDefinition("/swagger-resources/**", "anon");
 
-        chainDefinition.addPathDefinition("/**", "restAuthFilter");
+        if (enableAccessControl) {
+            chainDefinition.addPathDefinition("/**", "restAuthFilter");
+        } else {
+            chainDefinition.addPathDefinition("/**", "anon");
+        }
         return chainDefinition;
     }
 

@@ -13,6 +13,8 @@ mybatis:
 shiro:
   enabled: true
 
+enableAccessControl: true
+
 miniprogram:
   appid: ""
   appsecret: ""

@@ -9,6 +9,11 @@
       "name": "miniprogram.appsecret",
       "type": "java.lang.String",
       "description": "小程序appsecret."
+    },
+    {
+      "name": "enableAccessControl",
+      "type": "java.lang.Boolean",
+      "description": true
     }
   ]
 }
