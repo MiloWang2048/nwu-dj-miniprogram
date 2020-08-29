@@ -73,6 +73,8 @@ public class Authorizer extends AuthorizingRealm {
         if (user == null) {
             throw new BadRequestException("用户不存在");
         }
+        Subject subject = SecurityUtils.getSubject();
+        subject.getSession().setAttribute("UserEntity", user);
         return new SimpleAuthenticationInfo(openid, "", this.getName());
     }
 }
