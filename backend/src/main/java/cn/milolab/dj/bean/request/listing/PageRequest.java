@@ -17,6 +17,7 @@ import javax.validation.constraints.Positive;
 public class PageRequest {
     @Positive
     private Integer page = 1;
+
     @Min(10)
     private Integer size = 10;
 }

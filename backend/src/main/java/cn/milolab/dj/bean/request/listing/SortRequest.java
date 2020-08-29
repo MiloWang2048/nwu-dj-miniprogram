@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author milowang
@@ -14,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class SortRequest {
     @NotBlank
+    @Size(min = 1, max = 255)
     private String sortField;
+
     private Boolean descent = false;
 }

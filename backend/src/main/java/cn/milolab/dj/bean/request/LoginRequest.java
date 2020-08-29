@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author milowang
@@ -16,8 +17,10 @@ import javax.validation.constraints.NotBlank;
 public class LoginRequest {
 
     @NotBlank(message = "非法登录口令")
+    @Size(min = 1, max = 255)
     private String jscode;
 
     @URL(message = "非法头像链接")
+    @Size(min = 1, max = 255)
     private String avatarUrl;
 }

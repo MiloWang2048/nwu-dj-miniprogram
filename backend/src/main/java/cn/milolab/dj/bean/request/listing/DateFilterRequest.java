@@ -16,6 +16,7 @@ import java.util.Date;
 public class DateFilterRequest {
     @NotNull
     private Date startDate;
+
     @NotNull
     private Date endDate;
 }
