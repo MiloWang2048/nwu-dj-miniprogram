@@ -65,6 +65,7 @@
         where t1.id = #{id}
           and is_deleted = false;
     </select>
+
     <select id="getMyJobsRecord" resultMap="JobRecordResultMap">
         SELECT t2.*
         FROM job AS t1

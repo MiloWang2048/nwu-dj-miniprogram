@@ -31,7 +31,7 @@ public class JobService {
         ListResponse response = new ListResponse();
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
         List<Job> activeJobs = jobDAO.getAllActiveJobs();
-        PageInfo pageInfo = new PageInfo(activeJobs);
+        PageInfo pageInfo = new PageInfo<>(activeJobs);
         response.setTotalPages(pageInfo.getPages());
         response.setList(activeJobs);
         return response;
@@ -39,8 +39,11 @@ public class JobService {
 
     public ListResponse getMyJobList(PageRequest pageRequest, int userId){
         ListResponse response = new ListResponse();
-        Subject subject = SecurityUtils.getSubject();
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-        List<JobRecord> myJobRecords = jobRecordDAO.getMyJobsRecord();
+        List<JobRecord> myJobRecords = jobRecordDAO.getMyJobsRecord(userId);
+        PageInfo pageInfo = new PageInfo<>(myJobRecords);
+        response.setList(myJobRecords);
+        response.setTotalPages(pageInfo.getPages());
+        return response;
     }
 }
