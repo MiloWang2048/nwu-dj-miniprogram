@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: "jdbc:mysql://192.168.1.13:3306/dj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai"
+    url: "jdbc:mysql://localhost:3306/dj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai"
     driver-class-name: "com.mysql.cj.jdbc.Driver"
-    username: "admin"
-    password: "milowang2020"
+    username: "dj"
+    password: "dj2020"
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
 mybatis:
