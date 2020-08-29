@@ -5,6 +5,7 @@ import cn.milolab.dj.bean.entity.User;
 import cn.milolab.dj.dao.AdminInfoDAO;
 import cn.milolab.dj.dao.UserDAO;
 import cn.milolab.dj.error.exception.BadRequestException;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,6 +14,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +46,7 @@ public class Authorizer extends AuthorizingRealm {
             @Override
             public Collection<String> getRoles() {
                 List<String> roles = new ArrayList<>();
+                roles.add("USER");
                 if (adminInfo == null) {
                     return roles;
                 }
