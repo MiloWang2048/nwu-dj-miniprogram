@@ -46,4 +46,8 @@ public class JobService {
         response.setTotalPages(pageInfo.getPages());
         return response;
     }
+
+    public Job getJobById(int jobId){
+        return jobDAO.findById(jobId);
+    }
 }

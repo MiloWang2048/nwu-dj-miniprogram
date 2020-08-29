@@ -1,7 +1,9 @@
 package cn.milolab.dj.controller;
 
 import cn.milolab.dj.annotation.ManualRoleCheck;
+import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.User;
+import cn.milolab.dj.bean.request.JobDetailRequest;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
 import cn.milolab.dj.service.JobService;
@@ -36,5 +38,11 @@ public class PrivateController {
         Subject subject = SecurityUtils.getSubject();
         int userId = ((User) subject.getSession().getAttribute("UserEntity")).getId();
         return jobService.getMyJobList(pageRequest, userId);
+    }
+
+    @GetMapping("/get_job_detail")
+    @ManualRoleCheck("EMPLOYEE")
+    public Job getJobDetail(@Validated JobDetailRequest jobDetailRequest, BindingResult bindingResult) {
+        return jobService.getJobById(jobDetailRequest.getJobId());
     }
 }
