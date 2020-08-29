@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 29/08/2020 16:41:10
+ Date: 29/08/2020 23:26:30
 */
 
 SET NAMES utf8mb4;
@@ -26,12 +26,16 @@ CREATE TABLE `admin_info`  (
   `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `cst_create` datetime(0) NOT NULL,
   `cst_modified` datetime(0) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
   `stu_serial` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `job_serial` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_user_id`(`user_id`) USING BTREE,
+  UNIQUE INDEX `uk_stu_serial`(`stu_serial`) USING BTREE,
+  UNIQUE INDEX `uk_job_serial`(`job_serial`) USING BTREE,
+  INDEX `idx_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -47,7 +51,8 @@ CREATE TABLE `exchange_record`  (
   `original_user_id` int(10) UNSIGNED NOT NULL,
   `target_user_id` int(10) UNSIGNED NOT NULL,
   `is_accepted` tinyint(1) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `job_id`(`job_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -81,7 +86,9 @@ CREATE TABLE `job_record`  (
   `is_present` tinyint(1) UNSIGNED NOT NULL,
   `start_time` datetime(0) NOT NULL,
   `end_time` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `job_id`(`job_id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -97,7 +104,8 @@ CREATE TABLE `user`  (
   `unionid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `session_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_openid`(`openid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
