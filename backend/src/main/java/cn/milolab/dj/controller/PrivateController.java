@@ -3,6 +3,7 @@ package cn.milolab.dj.controller;
 import cn.milolab.dj.annotation.ManualRoleCheck;
 import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.User;
+import cn.milolab.dj.bean.request.AddJobRequest;
 import cn.milolab.dj.bean.request.JobDetailRequest;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
@@ -13,9 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author milowang
@@ -44,5 +43,11 @@ public class PrivateController {
     @ManualRoleCheck("EMPLOYEE")
     public Job getJobDetail(@Validated JobDetailRequest jobDetailRequest, BindingResult bindingResult) {
         return jobService.getJobById(jobDetailRequest.getJobId());
+    }
+
+    @PostMapping("/add_job")
+    @ManualRoleCheck("SECRETARY")
+    public void addJob(@Validated @RequestBody AddJobRequest request, BindingResult result) {
+        jobService.addJob(request);
     }
 }

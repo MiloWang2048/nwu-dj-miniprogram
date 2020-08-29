@@ -2,6 +2,7 @@ package cn.milolab.dj.service;
 
 import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.JobRecord;
+import cn.milolab.dj.bean.request.AddJobRequest;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
 import cn.milolab.dj.dao.JobDAO;
@@ -10,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -49,5 +51,12 @@ public class JobService {
 
     public Job getJobById(int jobId){
         return jobDAO.findById(jobId);
+    }
+
+    public boolean addJob(AddJobRequest request){
+        Job job = new Job();
+        BeanUtils.copyProperties(request, job);
+        int res = jobDAO.insertOne(job);
+        return res == 1;
     }
 }
