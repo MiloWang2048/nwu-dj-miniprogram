@@ -1,11 +1,14 @@
 package cn.milolab.dj.service;
 
+import cn.milolab.dj.bean.entity.ExchangeRecord;
 import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.JobRecord;
 import cn.milolab.dj.bean.request.AddJobRequest;
 import cn.milolab.dj.bean.request.ApplyJobRequest;
+import cn.milolab.dj.bean.request.ExchangeJobRequest;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
+import cn.milolab.dj.dao.ExchangeRecordDAO;
 import cn.milolab.dj.dao.JobDAO;
 import cn.milolab.dj.dao.JobRecordDAO;
 import cn.milolab.dj.error.exception.BadRequestException;
@@ -31,6 +34,9 @@ public class JobService {
 
     @Autowired
     JobRecordDAO jobRecordDAO;
+
+    @Autowired
+    ExchangeRecordDAO exchangeRecordDAO;
 
     public ListResponse getAllActiveJobs(PageRequest pageRequest) {
         ListResponse response = new ListResponse();
@@ -65,15 +71,15 @@ public class JobService {
         }
     }
 
-    boolean canApplyJob(int employeeId, ApplyJobRequest request) {
-        List<JobRecord> records = jobRecordDAO.getRecordsForJob(request.getJobId());
-        Job job = jobDAO.findById(request.getJobId());
+    boolean canApplyJob(int employeeId, int jobId, Date startTime, Date endTime) {
+        List<JobRecord> records = jobRecordDAO.getRecordsForJob(jobId);
+        Job job = jobDAO.findById(jobId);
         ArrayList<Date> startTimes = new ArrayList<>(), endTimes = new ArrayList<>();
         // 如果他已经抢班成功，则不能重复抢班
         boolean applied = false;
         for (JobRecord record : records) {
-            if (record.getStartTime().after(request.getEndTime()) ||
-                    record.getEndTime().before(request.getStartTime())) {
+            if (record.getStartTime().after(endTime) ||
+                    record.getEndTime().before(startTime)) {
                 records.remove(record);
                 continue;
             }
@@ -94,25 +100,54 @@ public class JobService {
             if (startTimes.get(0).before(endTimes.get(0))) {
                 current++;
                 startTimes.remove(0);
-            }else{
+            } else {
                 current--;
                 endTimes.remove(0);
             }
-            if(current > max){
+            if (current > max) {
                 max = current;
             }
         }
         return job.getMaxJob() > max;
     }
 
-    public void applyJob(ApplyJobRequest request, int employeeId){
-        if(canApplyJob(employeeId, request)){
+    public void applyJob(ApplyJobRequest request, int employeeId) {
+        if (canApplyJob(employeeId, request.getJobId(), request.getStartTime(), request.getEndTime())) {
             JobRecord jobRecord = new JobRecord();
             BeanUtils.copyProperties(request, jobRecord);
             jobRecord.setPresent(false);
             jobRecordDAO.insertOne(jobRecord);
-        }else{
+        } else {
             throw new BadRequestException("已抢或超出限制");
         }
+    }
+
+    public void exchangeJob(ExchangeJobRequest request, int originalEmployeeId) {
+        List<JobRecord> jobRecords = jobRecordDAO.getRecordsForJob(request.getJobId());
+        JobRecord originalRecord = null;
+        for (JobRecord record : jobRecords) {
+            if (record.getEmployeeId() == originalEmployeeId) {
+                originalRecord = record;
+                break;
+            }
+        }
+        if (originalRecord == null) {
+            throw new BadRequestException("当前未抢班");
+        }
+        if (!canApplyJob(request.getTargetEmployeeId(),
+                request.getJobId(),
+                originalRecord.getStartTime(),
+                originalRecord.getEndTime())) {
+            throw new BadRequestException("目标社员非空闲");
+        }
+        originalRecord.setEmployeeId(request.getTargetEmployeeId());
+        jobRecordDAO.deleteById(originalRecord.getId());
+        jobRecordDAO.insertOne(originalRecord);
+        ExchangeRecord exchangeRecord = new ExchangeRecord();
+        exchangeRecord.setAccepted(true);
+        exchangeRecord.setJobId(request.getJobId());
+        exchangeRecord.setOriginalEmployeeId(originalEmployeeId);
+        exchangeRecord.setTargetEmployeeId(request.getTargetEmployeeId());
+        exchangeRecordDAO.insertOne(exchangeRecord);
     }
 }

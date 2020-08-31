@@ -6,6 +6,7 @@ import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.User;
 import cn.milolab.dj.bean.request.AddJobRequest;
 import cn.milolab.dj.bean.request.ApplyJobRequest;
+import cn.milolab.dj.bean.request.ExchangeJobRequest;
 import cn.milolab.dj.bean.request.JobDetailRequest;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
@@ -58,5 +59,13 @@ public class PrivateController {
         Subject subject = SecurityUtils.getSubject();
         Employee employee = (Employee) subject.getSession().getAttribute("EmployeeEntity");
         jobService.applyJob(request, employee.getId());
+    }
+
+    @PostMapping("/exchange_job")
+    @ManualRoleCheck("EMPLOYEE")
+    public void exchangeJob(@Validated @RequestBody ExchangeJobRequest request, BindingResult result) {
+        Subject subject = SecurityUtils.getSubject();
+        Employee employee = (Employee) subject.getSession().getAttribute("EmployeeEntity");
+        jobService.exchangeJob(request, employee.getId());
     }
 }
