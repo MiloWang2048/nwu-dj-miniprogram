@@ -42,6 +42,10 @@ public class Authorizer extends AuthorizingRealm {
         String openid = (String) principals.getPrimaryPrincipal();
         User user = userDAO.findByOpenid(openid);
         Employee employee = employeeDAO.findByUserId(user.getId());
+        if(employee != null){
+            Subject subject = SecurityUtils.getSubject();
+            subject.getSession().setAttribute("EmployeeEntity", employee);
+        }
         return new AuthorizationInfo() {
             @Override
             public Collection<String> getRoles() {
