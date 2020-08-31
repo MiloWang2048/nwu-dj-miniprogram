@@ -36,7 +36,6 @@ public class JobServiceTest {
     @Test
     public void addJob() {
         AddJobRequest request = new AddJobRequest("name", "position", new Date(), new Date(), 3);
-        boolean res = jobService.addJob(request);
-        Assert.assertTrue(res);
+        jobService.addJob(request);
     }
 }

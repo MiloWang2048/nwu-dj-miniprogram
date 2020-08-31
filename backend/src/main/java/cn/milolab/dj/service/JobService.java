@@ -7,13 +7,11 @@ import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
 import cn.milolab.dj.dao.JobDAO;
 import cn.milolab.dj.dao.JobRecordDAO;
+import cn.milolab.dj.error.exception.InternalServerErrorException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,34 +27,36 @@ public class JobService {
     @Autowired
     JobRecordDAO jobRecordDAO;
 
-    public ListResponse getAllActiveJobs(PageRequest pageRequest){
+    public ListResponse getAllActiveJobs(PageRequest pageRequest) {
         ListResponse response = new ListResponse();
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
         List<Job> activeJobs = jobDAO.getAllActiveJobs();
-        PageInfo pageInfo = new PageInfo<>(activeJobs);
+        PageInfo<Job> pageInfo = new PageInfo<>(activeJobs);
         response.setTotalPages(pageInfo.getPages());
         response.setList(activeJobs);
         return response;
     }
 
-    public ListResponse getMyJobList(PageRequest pageRequest, int userId){
+    public ListResponse getMyJobList(PageRequest pageRequest, int userId) {
         ListResponse response = new ListResponse();
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
         List<JobRecord> myJobRecords = jobRecordDAO.getMyJobsRecord(userId);
-        PageInfo pageInfo = new PageInfo<>(myJobRecords);
+        PageInfo<JobRecord> pageInfo = new PageInfo<>(myJobRecords);
         response.setList(myJobRecords);
         response.setTotalPages(pageInfo.getPages());
         return response;
     }
 
-    public Job getJobById(int jobId){
+    public Job getJobById(int jobId) {
         return jobDAO.findById(jobId);
     }
 
-    public boolean addJob(AddJobRequest request){
+    public void addJob(AddJobRequest request) {
         Job job = new Job();
         BeanUtils.copyProperties(request, job);
         int res = jobDAO.insertOne(job);
-        return res == 1;
+        if (res != 1) {
+            throw new InternalServerErrorException("无法插入排班");
+        }
     }
 }
