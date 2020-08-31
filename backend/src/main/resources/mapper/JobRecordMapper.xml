@@ -79,4 +79,14 @@
         ORDER BY t1.start_time DESC
     </select>
 
+    <select id="getRecordsForJob" resultMap="JobRecordResultMap">
+        SELECT
+            t1.*
+        FROM
+            job_record AS t1
+        WHERE
+            t1.is_deleted = false AND
+            t1.job_id = #{jobId}
+    </select>
+
 </mapper>

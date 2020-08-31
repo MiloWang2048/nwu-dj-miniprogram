@@ -55,4 +55,11 @@ public interface JobRecordDAO {
      * @return 抢班记录列表
      */
     List<JobRecord> getMyJobsRecord(int employeeId);
+
+    /**
+     * 获取指定班次的抢班记录
+     * @param jobId 要查找班次的id
+     * @return 查找到job records的列表
+     */
+    List<JobRecord> getRecordsForJob(int jobId);
 }

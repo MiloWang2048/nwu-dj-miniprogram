@@ -1,5 +1,6 @@
 package cn.milolab.dj.util;
 
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -26,4 +27,14 @@ public class DateUtil {
         Date d2 = (Date) o2;
         return d1.getTime() / 1000 == d2.getTime() / 1000;
     }
+
+    public static Comparator<Date> comparator = (o1, o2) -> {
+        int result = 0;
+        if(o1.before(o2)){
+            result = -1;
+        }else if (o1.after(o2)){
+            result = 1;
+        }
+        return result;
+    };
 }
