@@ -20,8 +20,8 @@ public class ExchangeRecord {
     private Date cstCreate;
     private Date cstModified;
     private Integer jobId;
-    private Integer originalUserId;
-    private Integer targetUserId;
+    private Integer originalEmployeeId;
+    private Integer targetEmployeeId;
     private Boolean accepted;
 
     @Override
@@ -38,8 +38,8 @@ public class ExchangeRecord {
                 DateUtil.equals(cstCreate, that.cstCreate) &&
                 DateUtil.equals(cstModified, that.cstModified) &&
                 Objects.equals(jobId, that.jobId) &&
-                Objects.equals(originalUserId, that.originalUserId) &&
-                Objects.equals(targetUserId, that.targetUserId) &&
+                Objects.equals(originalEmployeeId, that.originalEmployeeId) &&
+                Objects.equals(targetEmployeeId, that.targetEmployeeId) &&
                 Objects.equals(accepted, that.accepted);
     }
 }

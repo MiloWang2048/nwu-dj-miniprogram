@@ -20,7 +20,7 @@ public class JobRecord {
     private Date cstCreate;
     private Date cstModified;
     private Integer jobId;
-    private Integer userId;
+    private Integer employeeId;
     private Boolean present;
     private Date startTime;
     private Date endTime;
@@ -39,7 +39,7 @@ public class JobRecord {
                 DateUtil.equals(cstCreate, jobRecord.cstCreate) &&
                 DateUtil.equals(cstModified, jobRecord.cstModified) &&
                 Objects.equals(jobId, jobRecord.jobId) &&
-                Objects.equals(userId, jobRecord.userId) &&
+                Objects.equals(employeeId, jobRecord.employeeId) &&
                 Objects.equals(present, jobRecord.present) &&
                 DateUtil.equals(startTime, jobRecord.startTime) &&
                 DateUtil.equals(endTime, jobRecord.endTime);

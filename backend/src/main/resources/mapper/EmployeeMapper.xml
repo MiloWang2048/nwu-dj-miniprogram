@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.milolab.dj.dao.AdminInfoDAO">
+<mapper namespace="cn.milolab.dj.dao.EmployeeDAO">
 
-    <resultMap id="AdminInfoResultMap" type="cn.milolab.dj.bean.entity.AdminInfo">
+    <resultMap id="EmployeeResultMap" type="cn.milolab.dj.bean.entity.Employee">
         <id property="id" column="id"/>
         <result property="deleted" column="is_deleted"/>
         <result property="cstCreate" column="cst_create"/>
@@ -17,13 +17,13 @@
     </resultMap>
 
     <insert id="insertOne">
-        insert into admin_info (cst_create, cst_modified, user_id, stu_serial, job_serial, name, role)
+        insert into employee (cst_create, cst_modified, user_id, stu_serial, job_serial, name, role)
         values (current_timestamp(), current_timestamp(), #{userId}, #{stuSerial},
                 #{jobSerial}, #{name}, #{role});
     </insert>
 
     <update id="updateWithEntity">
-        update admin_info
+        update employee
         set user_id      = #{userId},
             stu_serial   = #{stuSerial},
             job_serial   = #{jobSerial},
@@ -31,34 +31,34 @@
             role         = #{role},
             cst_modified = current_timestamp()
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
     <update id="deleteById">
-        update admin_info
+        update employee
         set is_deleted = true
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
-    <select id="getAllAdminInfo" resultMap="AdminInfoResultMap">
+    <select id="getAllEmployees" resultMap="EmployeeResultMap">
         select *
-        from admin_info
-        where is_deleted = false;
+        from employee
+        where is_deleted = false
     </select>
 
-    <select id="findById" resultMap="AdminInfoResultMap">
+    <select id="findById" resultMap="EmployeeResultMap">
         select *
-        from admin_info t1
+        from employee t1
         where t1.id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </select>
 
-    <select id="findByUserId" resultMap="AdminInfoResultMap">
+    <select id="findByUserId" resultMap="EmployeeResultMap">
         select *
-        from admin_info
+        from employee
         where user_id = #{userId}
-          and is_deleted = false;
+          and is_deleted = false
     </select>
 
 </mapper>

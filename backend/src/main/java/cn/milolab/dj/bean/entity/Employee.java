@@ -14,7 +14,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminInfo {
+public class Employee {
     private Integer id;
     private Boolean deleted;
     private Date cstCreate;
@@ -33,16 +33,16 @@ public class AdminInfo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AdminInfo adminInfo = (AdminInfo) o;
-        return Objects.equals(id, adminInfo.id) &&
-                Objects.equals(deleted, adminInfo.deleted) &&
-                DateUtil.equals(cstCreate, adminInfo.cstCreate) &&
-                DateUtil.equals(cstModified, adminInfo.cstModified) &&
-                Objects.equals(userId, adminInfo.userId) &&
-                Objects.equals(stuSerial, adminInfo.stuSerial) &&
-                Objects.equals(jobSerial, adminInfo.jobSerial) &&
-                Objects.equals(name, adminInfo.name) &&
-                Objects.equals(role, adminInfo.role);
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                Objects.equals(deleted, employee.deleted) &&
+                DateUtil.equals(cstCreate, employee.cstCreate) &&
+                DateUtil.equals(cstModified, employee.cstModified) &&
+                Objects.equals(userId, employee.userId) &&
+                Objects.equals(stuSerial, employee.stuSerial) &&
+                Objects.equals(jobSerial, employee.jobSerial) &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(role, employee.role);
     }
 
 }

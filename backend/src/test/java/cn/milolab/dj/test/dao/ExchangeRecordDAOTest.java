@@ -55,7 +55,7 @@ public class ExchangeRecordDAOTest {
         assertArrayEquals("列表数据与原数据不一致", new ExchangeRecord[]{rawData}, listResult.toArray());
         // update
         Thread.sleep(1000);
-        rawData.setTargetUserId(10);
+        rawData.setTargetEmployeeId(10);
         int updateResult = exchangeRecordDAO.updateWithEntity(rawData);
         assertEquals("update影响行数必须为1", 1, updateResult);
         findResult = exchangeRecordDAO.findById(1);

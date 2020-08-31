@@ -18,7 +18,7 @@
     <insert id="insertOne">
         insert into user (cst_create, cst_modified, openid, unionid, session_key, avatar_url)
         values (current_timestamp(), current_timestamp(), #{openid}, #{unionid},
-                #{sessionKey}, #{avatarUrl});
+                #{sessionKey}, #{avatarUrl})
     </insert>
 
     <update id="updateWithEntity">
@@ -29,34 +29,34 @@
             avatar_url   = #{avatarUrl},
             cst_modified = current_timestamp()
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
     <update id="deleteById">
         update user
         set is_deleted = true
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
     <select id="getAllUsers" resultMap="UserResultMap">
         select *
         from user
-        where is_deleted = false;
+        where is_deleted = false
     </select>
 
     <select id="findById" resultMap="UserResultMap">
         select *
         from user t1
         where t1.id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </select>
 
     <select id="findByOpenid" resultType="cn.milolab.dj.bean.entity.User">
         select *
         from user
         where openid = #{openid}
-          and is_deleted = false;
+          and is_deleted = false
     </select>
 
 </mapper>

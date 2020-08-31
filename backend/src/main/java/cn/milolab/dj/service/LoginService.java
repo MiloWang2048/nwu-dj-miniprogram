@@ -1,12 +1,12 @@
 package cn.milolab.dj.service;
 
 import cn.milolab.dj.bean.business.WxLoginResult;
-import cn.milolab.dj.bean.entity.AdminInfo;
+import cn.milolab.dj.bean.entity.Employee;
 import cn.milolab.dj.bean.entity.User;
 import cn.milolab.dj.bean.request.LoginRequest;
 import cn.milolab.dj.bean.response.LoginResponse;
 import cn.milolab.dj.conf.business.MiniprogramConfig;
-import cn.milolab.dj.dao.AdminInfoDAO;
+import cn.milolab.dj.dao.EmployeeDAO;
 import cn.milolab.dj.dao.UserDAO;
 import cn.milolab.dj.error.exception.InternalServerErrorException;
 import cn.milolab.dj.error.exception.UnauthenticatedException;
@@ -45,7 +45,7 @@ public class LoginService {
     UserDAO userDAO;
 
     @Autowired
-    AdminInfoDAO adminInfoDAO;
+    EmployeeDAO employeeDAO;
 
     public LoginResponse wxLogin(LoginRequest request) {
         // 准备参数
@@ -72,12 +72,12 @@ public class LoginService {
         }
         user.setSessionKey(result.getSession_key());
         userDAO.updateWithEntity(user);
-        // 获取管理员信息
-        AdminInfo adminInfo = adminInfoDAO.findByUserId(user.getId());
-        LOGGER.debug(adminInfo);
+        // 获取社员信息
+        Employee employee = employeeDAO.findByUserId(user.getId());
+        LOGGER.debug(employee);
         LoginResponse response = new LoginResponse();
-        if (adminInfo != null) {
-            BeanUtils.copyProperties(adminInfo, response);
+        if (employee != null) {
+            BeanUtils.copyProperties(employee, response);
         }
         return response;
     }

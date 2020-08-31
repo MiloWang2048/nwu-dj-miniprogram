@@ -1,8 +1,8 @@
 package cn.milolab.dj.conf.security;
 
-import cn.milolab.dj.bean.entity.AdminInfo;
+import cn.milolab.dj.bean.entity.Employee;
 import cn.milolab.dj.bean.entity.User;
-import cn.milolab.dj.dao.AdminInfoDAO;
+import cn.milolab.dj.dao.EmployeeDAO;
 import cn.milolab.dj.dao.UserDAO;
 import cn.milolab.dj.error.exception.BadRequestException;
 import org.apache.shiro.SecurityUtils;
@@ -35,22 +35,22 @@ public class Authorizer extends AuthorizingRealm {
     UserDAO userDAO;
 
     @Autowired
-    AdminInfoDAO adminInfoDAO;
+    EmployeeDAO employeeDAO;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String openid = (String) principals.getPrimaryPrincipal();
         User user = userDAO.findByOpenid(openid);
-        AdminInfo adminInfo = adminInfoDAO.findByUserId(user.getId());
+        Employee employee = employeeDAO.findByUserId(user.getId());
         return new AuthorizationInfo() {
             @Override
             public Collection<String> getRoles() {
                 List<String> roles = new ArrayList<>();
                 roles.add("USER");
-                if (adminInfo == null) {
+                if (employee == null) {
                     return roles;
                 }
-                roles = Arrays.asList(adminInfo.getRole().split(" "));
+                roles = Arrays.asList(employee.getRole().split(" "));
                 return roles;
             }
 

@@ -3,25 +3,25 @@
 
  Source Server         : local-mysql
  Source Server Type    : MySQL
- Source Server Version : 50730
+ Source Server Version : 50731
  Source Host           : localhost:3306
  Source Schema         : dj
 
  Target Server Type    : MySQL
- Target Server Version : 50730
+ Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 29/08/2020 23:26:30
+ Date: 31/08/2020 14:33:04
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for admin_info
+-- Table structure for employee
 -- ----------------------------
-DROP TABLE IF EXISTS `admin_info`;
-CREATE TABLE `admin_info`  (
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE `employee`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `cst_create` datetime(0) NOT NULL,
@@ -48,11 +48,13 @@ CREATE TABLE `exchange_record`  (
   `cst_create` datetime(0) NOT NULL,
   `cst_modified` datetime(0) NOT NULL,
   `job_id` int(10) UNSIGNED NOT NULL,
-  `original_user_id` int(10) UNSIGNED NOT NULL,
-  `target_user_id` int(10) UNSIGNED NOT NULL,
+  `original_employee_id` int(10) UNSIGNED NOT NULL,
+  `target_employee_id` int(10) UNSIGNED NOT NULL,
   `is_accepted` tinyint(1) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `job_id`(`job_id`) USING BTREE
+  INDEX `job_id`(`job_id`) USING BTREE,
+  INDEX `original_employee_id`(`original_employee_id`) USING BTREE,
+  INDEX `target_employee_id`(`target_employee_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -82,13 +84,13 @@ CREATE TABLE `job_record`  (
   `cst_create` datetime(0) NOT NULL,
   `cst_modified` datetime(0) NOT NULL,
   `job_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
   `is_present` tinyint(1) UNSIGNED NOT NULL,
   `start_time` datetime(0) NOT NULL,
   `end_time` datetime(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE
+  INDEX `user_id`(`employee_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

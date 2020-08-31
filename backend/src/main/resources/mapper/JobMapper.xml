@@ -31,7 +31,7 @@
                 #{jobPosition},
                 #{startTime},
                 #{startTime},
-                #{maxJob});
+                #{maxJob})
     </insert>
 
     <update id="updateWithEntity">
@@ -43,27 +43,27 @@
             max_job      = #{maxJob},
             cst_modified = current_timestamp()
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
     <update id="deleteById">
         update job
         set is_deleted = true
         where id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </update>
 
     <select id="getAllJobs" resultMap="JobResultMap">
         select *
         from job
-        where is_deleted = false;
+        where is_deleted = false
     </select>
 
     <select id="findById" resultMap="JobResultMap">
         select *
         from job t1
         where t1.id = #{id}
-          and is_deleted = false;
+          and is_deleted = false
     </select>
 
     <select id="getAllActiveJobs" resultMap="JobResultMap">
@@ -71,7 +71,7 @@
         from job
         where start_time >= current_timestamp()
         and is_deleted = false
-        order by start_time;
+        order by start_time
     </select>
 
 </mapper>

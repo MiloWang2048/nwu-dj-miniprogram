@@ -10,9 +10,6 @@ mybatis:
   mapper-locations: "classpath:mapper/*.xml"
   type-aliases-package: "cn.milolab.dj.bean.entity"
 
-shiro:
-  enabled: true
-
 enableAccessControl: true
 
 miniprogram:
