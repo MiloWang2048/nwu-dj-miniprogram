@@ -4,13 +4,11 @@ import cn.milolab.dj.annotation.ManualRoleCheck;
 import cn.milolab.dj.bean.entity.Employee;
 import cn.milolab.dj.bean.entity.Job;
 import cn.milolab.dj.bean.entity.User;
-import cn.milolab.dj.bean.request.AddJobRequest;
-import cn.milolab.dj.bean.request.ApplyJobRequest;
-import cn.milolab.dj.bean.request.ExchangeJobRequest;
-import cn.milolab.dj.bean.request.JobDetailRequest;
+import cn.milolab.dj.bean.request.*;
 import cn.milolab.dj.bean.request.listing.PageRequest;
 import cn.milolab.dj.bean.response.ListResponse;
 import cn.milolab.dj.service.JobService;
+import cn.milolab.dj.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 public class PrivateController {
     @Autowired
     JobService jobService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/get_active_job_list")
     @ManualRoleCheck("EMPLOYEE")
@@ -67,5 +68,13 @@ public class PrivateController {
         Subject subject = SecurityUtils.getSubject();
         Employee employee = (Employee) subject.getSession().getAttribute("EmployeeEntity");
         jobService.exchangeJob(request, employee.getId());
+    }
+
+    @PostMapping("/verify")
+    @ManualRoleCheck()
+    public void bindWechat(@Validated @RequestBody VerifyRequest request, BindingResult result) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getSession().getAttribute("UserEntity");
+        userService.verify(request, user);
     }
 }

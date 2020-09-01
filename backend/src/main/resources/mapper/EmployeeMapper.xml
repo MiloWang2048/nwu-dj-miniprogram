@@ -61,4 +61,14 @@
           and is_deleted = false
     </select>
 
+    <select id="findByStuSerial" resultMap="EmployeeResultMap">
+        SELECT
+            *
+        FROM
+            employee
+        WHERE
+            employee.is_deleted = false AND
+            employee.stu_serial = #{stuSerial}
+    </select>
+
 </mapper>
