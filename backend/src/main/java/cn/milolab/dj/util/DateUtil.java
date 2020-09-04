@@ -28,6 +28,9 @@ public class DateUtil {
         return d1.getTime() / 1000 == d2.getTime() / 1000;
     }
 
+    /**
+     * date比较器，用于排序
+     */
     public static Comparator<Date> comparator = (o1, o2) -> {
         int result = 0;
         if(o1.before(o2)){

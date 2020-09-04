@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
+ * 自定义异常（定义在cn.milolab.dj.error.exception）的处理器
+ *
  * @author milowang
  */
 @RestControllerAdvice

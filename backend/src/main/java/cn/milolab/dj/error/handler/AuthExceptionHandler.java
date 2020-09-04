@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
+ * 访问控制异常处理器
+ *
  * @author milowang
  */
 @RestControllerAdvice

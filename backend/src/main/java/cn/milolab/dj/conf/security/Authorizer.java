@@ -4,7 +4,6 @@ import cn.milolab.dj.bean.entity.Employee;
 import cn.milolab.dj.bean.entity.User;
 import cn.milolab.dj.dao.EmployeeDAO;
 import cn.milolab.dj.dao.UserDAO;
-import cn.milolab.dj.error.exception.BadRequestException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -39,13 +38,21 @@ public class Authorizer extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
+        // 获取正在授权的openid
         String openid = (String) principals.getPrimaryPrincipal();
+
+        // 获取用户实体
         User user = userDAO.findByOpenid(openid);
+
+        // 获取员工实体，如果不为空，添加到subject session
         Employee employee = employeeDAO.findByUserId(user.getId());
-        if(employee != null){
+        if (employee != null) {
             Subject subject = SecurityUtils.getSubject();
             subject.getSession().setAttribute("EmployeeEntity", employee);
         }
+
+        // 返回授权信息实体
         return new AuthorizationInfo() {
             @Override
             public Collection<String> getRoles() {
@@ -75,7 +82,7 @@ public class Authorizer extends AuthorizingRealm {
         String openid = (String) token.getPrincipal();
         User user = userDAO.findByOpenid(openid);
         if (user == null) {
-            throw new BadRequestException("用户不存在");
+            throw new AuthenticationException("用户不存在");
         }
         Subject subject = SecurityUtils.getSubject();
         subject.getSession().setAttribute("UserEntity", user);

@@ -6,10 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 标记于controller方法上，用于启用手动权限检查
+ *
  * @author milowang
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ManualRoleCheck {
-    public String value() default "USER";
+    String value() default "USER";
 }

@@ -47,31 +47,43 @@ public class LoginService {
     @Autowired
     EmployeeDAO employeeDAO;
 
+    /**
+     * 小程序登录
+     *
+     * @param request 登录请求
+     * @return 登录响应体
+     */
     public LoginResponse wxLogin(LoginRequest request) {
+
         // 准备参数
         Map<String, String> requestParam = new HashMap<>(3);
         requestParam.put("appid", miniprogramConfig.getAppid());
         requestParam.put("appsecret", miniprogramConfig.getAppsecret());
         requestParam.put("jscode", request.getJscode());
         LOGGER.debug(requestParam);
+
         // 请求微信认证
         WxLoginResult result = requestWxAuth(requestParam);
+
         // 查找本地用户，没有则创建
         User user = userDAO.findByOpenid(result.getOpenid());
         if (user == null) {
             createAccount(result);
             user = userDAO.findByOpenid(result.getOpenid());
         }
+
         // shiro登录
         Subject subject = SecurityUtils.getSubject();
         subject.getSession().setTimeout(-1000L);
         subject.login(new UsernamePasswordToken(result.getOpenid(), ""));
+
         // 更新头像链接和session key
         if (request.getAvatarUrl() != null) {
             user.setAvatarUrl(request.getAvatarUrl());
         }
         user.setSessionKey(result.getSession_key());
         userDAO.updateWithEntity(user);
+
         // 获取社员信息
         Employee employee = employeeDAO.findByUserId(user.getId());
         LOGGER.debug(employee);
@@ -82,6 +94,12 @@ public class LoginService {
         return response;
     }
 
+    /**
+     * 请求微信认证
+     *
+     * @param requestParam 请求参数map
+     * @return 微信登录结果
+     */
     private WxLoginResult requestWxAuth(Map<String, String> requestParam) {
         WxLoginResult result;
         try {
@@ -100,18 +118,21 @@ public class LoginService {
         return result;
     }
 
+    /**
+     * 根据微信登录结果创建用户
+     *
+     * @param result 微信登录结果
+     */
     private void createAccount(WxLoginResult result) {
+
+        // 生成用户实体并插入数据库
         User user = new User();
         user.setOpenid(result.getOpenid());
         user.setUnionid(result.getUnionid());
         int insertResult;
-        try {
-            insertResult = userDAO.insertOne(user);
-        } catch (Exception e) {
-            LOGGER.warn(result);
-            LOGGER.warn(e);
-            throw new InternalServerErrorException("用户创建失败");
-        }
+        insertResult = userDAO.insertOne(user);
+
+        // 如果结果不为1，报500
         if (insertResult != 1) {
             throw new InternalServerErrorException("用户创建失败");
         }
