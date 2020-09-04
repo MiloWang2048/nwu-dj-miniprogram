@@ -51,8 +51,17 @@ public interface EmployeeDAO {
 
     /**
      * 修改指定id的社员
+     *
      * @param employee 修改过的新记录
      * @return 受影响的行数
      */
     int updateWithEntity(Employee employee);
+
+    /**
+     * 根据学号查找社员
+     *
+     * @param stuSerial 要查找社员的学号
+     * @return 查找到的社员实体
+     */
+    Employee findByStuSerial(String stuSerial);
 }
